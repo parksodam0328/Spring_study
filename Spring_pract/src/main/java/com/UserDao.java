@@ -3,7 +3,7 @@ package com;
 import javax.jws.soap.SOAPBinding;
 import java.sql.*;
 
-public abstract class UserDao {
+public class UserDao {
 
     //getConnection 구현
    /* private Connection getConnection() throws SQLException {
@@ -12,11 +12,14 @@ public abstract class UserDao {
         return con;
         }
    */
-
-   abstract Connection getConnection() throws SQLException;
+   ConnectionMaker connectionMaker;
+   //PrdConnectionMaker prdConnectionMaker;
+   public UserDao(ConnectionMaker connectionMaker){ //DI 적용
+       this.connectionMaker = connectionMaker;
+   }
     //add 구현
     public void add(User user) throws SQLException {
-        Connection con = getConnection();
+        Connection con = connectionMaker.getConnection();
         PreparedStatement ps = con.prepareStatement("insert into users(id,password, name) values(?,?,?)");
 
         ps.setString(1, user.getId());
@@ -30,7 +33,7 @@ public abstract class UserDao {
     }
     //get 구현
     public User get(String id) throws SQLException {
-        Connection con = getConnection();
+        Connection con = connectionMaker.getConnection();
         PreparedStatement ps = con.prepareStatement("select * from users where id=?");
 
         ps.setString(1,id);
@@ -48,20 +51,5 @@ public abstract class UserDao {
 
         return user;
     }
-    public static void main(String[] args) throws SQLException {
-        UserDao dao = new ProUserDao();
 
-        User user = new User();
-        user.setId(("Sean"));
-        user.setPassword("2014");
-        user.setName("hot");
-        dao.add(user);
-
-        User selectedUser = dao.get("lady");
-        System.out.println("id : "+selectedUser.getId());
-        System.out.println("password : "+selectedUser.getPassword());
-        System.out.println("name : "+selectedUser.getName());
-
-        dao.get(user.getId());
-    }
 }
