@@ -14,9 +14,18 @@ public class UserDao {
    */
    ConnectionMaker connectionMaker;
    //PrdConnectionMaker prdConnectionMaker;
-   public UserDao(ConnectionMaker connectionMaker){ //DI 적용
-       this.connectionMaker = connectionMaker;
-   }
+
+
+    public UserDao() {
+    }
+
+    public void setConnectionMaker(ConnectionMaker connectionMaker){
+        this.connectionMaker=connectionMaker;
+    }
+
+    /*public UserDao(ConnectionMaker connectionMaker){ //DI 적용
+           this.connectionMaker = connectionMaker;
+       }*/
     //add 구현
     public void add(User user) throws SQLException {
         Connection con = connectionMaker.getConnection();
