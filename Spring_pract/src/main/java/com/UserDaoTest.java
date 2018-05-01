@@ -18,6 +18,7 @@ public class UserDaoTest {
         //AnnotationConfigApplicationContext로 생성
         //context = new AnnotationConfigApplicationContext(UserDaoFactory.class);
         //context = new GenericXmlApplicationContext("applicationContext.xml");
+        //context = new ClassPathXmlApplicationContext("applicationContext.xml");
         context = new ClassPathXmlApplicationContext("applicationContext.xml");
 
         //UserDao dao = userDaoFactory.getLocalUserDao(); // 어떤 메소드를 연결하냐의 따라 연결되는 디비가 달라짐
@@ -27,10 +28,10 @@ public class UserDaoTest {
         //ConnectionMaker connectionMaker = new PrdConnectionMaker();
 
         String environment ="prd";
-        if(environment.equals("prd")){
+       /* if(environment.equals("prd")){
             dao = userDaoFactory.getPrdUserDao();
             dao = context.getBean("prdUserDao",UserDao.class);
-        }
+        }*/
         //UserDao dao = new UserDao(connectionMaker); //DI 적용
 
        /* User user = new User();
@@ -39,7 +40,7 @@ public class UserDaoTest {
         user.setName("swinewfg");
         dao.add(user);*/
 
-        User selectedUser = dao.get("ewods");
+        User selectedUser = dao.get("pink");
         System.out.println("id : "+selectedUser.getId());
         System.out.println("password : "+selectedUser.getPassword());
         System.out.println("name : "+selectedUser.getName());

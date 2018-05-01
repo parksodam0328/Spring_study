@@ -1,6 +1,7 @@
 package com;
 
 import javax.jws.soap.SOAPBinding;
+import javax.sql.DataSource;
 import java.sql.*;
 
 public class UserDao {
@@ -12,23 +13,27 @@ public class UserDao {
         return con;
         }
    */
-   ConnectionMaker connectionMaker;
+   private DataSource dataSource;
    //PrdConnectionMaker prdConnectionMaker;
 
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public UserDao() {
     }
 
-    public void setConnectionMaker(ConnectionMaker connectionMaker){
-        this.connectionMaker=connectionMaker;
-    }
+    /*public void setConnectionMaker(ConnectionMaker dataSource){
+        this.dataSource=dataSource;
+    }*/
 
     /*public UserDao(ConnectionMaker connectionMaker){ //DI 적용
            this.connectionMaker = connectionMaker;
        }*/
     //add 구현
     public void add(User user) throws SQLException {
-        Connection con = connectionMaker.getConnection();
+        Connection con = dataSource.getConnection();
         PreparedStatement ps = con.prepareStatement("insert into users(id,password, name) values(?,?,?)");
 
         ps.setString(1, user.getId());
@@ -42,7 +47,7 @@ public class UserDao {
     }
     //get 구현
     public User get(String id) throws SQLException {
-        Connection con = connectionMaker.getConnection();
+        Connection con = dataSource.getConnection();
         PreparedStatement ps = con.prepareStatement("select * from users where id=?");
 
         ps.setString(1,id);
